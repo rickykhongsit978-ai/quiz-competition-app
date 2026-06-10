@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Questions - Quiz Competition App</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.admin-container{
+    max-width:1000px;
+    margin:30px auto;
+    background:#fff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.admin-title{
+    text-align:center;
+    margin-bottom:25px;
+    color:#2c3e50;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+.form-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+.save-btn{
+    width:100%;
+    margin-top:10px;
+}
+
+.question-table{
+    width:100%;
+    margin-top:30px;
+    border-collapse:collapse;
+}
+
+.question-table th,
+.question-table td{
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:left;
+}
+
+.question-table th{
+    background:#3498db;
+    color:white;
+}
+
+.delete-btn{
+    background:#e74c3c;
+}
+
+.delete-btn:hover{
+    background:#c0392b;
+}
+
+.empty{
+    text-align:center;
+    color:#888;
+    margin-top:20px;
+}
+
+</style>
+
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🏆 Quiz Competition App</div>
+
+
+<ul class="nav-links">
+    <li><a href="index.html">Quiz</a></li>
+    <li><a href="register.html">Register</a></li>
+    <li><a href="add-questions.html">Add Questions</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+</ul>
+
+
+</nav>
+
+<div class="admin-container">
+
+
+<h1 class="admin-title">
+    ➕ Add Quiz Questions
+</h1>
+
+<div class="form-group">
+    <label>Question</label>
+    <input type="text" id="question">
+</div>
+
+<div class="form-group">
+    <label>Option 1</label>
+    <input type="text" id="option1">
+</div>
+
+<div class="form-group">
+    <label>Option 2</label>
+    <input type="text" id="option2">
+</div>
+
+<div class="form-group">
+    <label>Option 3</label>
+    <input type="text" id="option3">
+</div>
+
+<div class="form-group">
+    <label>Option 4</label>
+    <input type="text" id="option4">
+</div>
+
+<div class="form-group">
+    <label>Correct Answer</label>
+    <input type="text" id="answer">
+</div>
+
+<button class="save-btn" onclick="addQuestion()">
+    Save Question
+</button>
+
+<table class="question-table">
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Question</th>
+            <th>Correct Answer</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody id="questionTable"></tbody>
+
+</table>
+
+<p id="emptyMessage" class="empty">
+    No Questions Added Yet.
+</p>
+
+
+</div>
+
+<script>
+
+function addQuestion(){
+
+    let question =
+    document.getElementById("question").value.trim();
+
+    let option1 =
+    document.getElementById("option1").value.trim();
+
+    let option2 =
+    document.getElementById("option2").value.trim();
+
+    let option3 =
+    document.getElementById("option3").value.trim();
+
+    let option4 =
+    document.getElementById("option4").value.trim();
+
+    let answer =
+    document.getElementById("answer").value.trim();
+
+    if(
+        !question ||
+        !option1 ||
+        !option2 ||
+        !option3 ||
+        !option4 ||
+        !answer
+    ){
+        alert("Please fill all fields.");
+        return;
+    }
+
+    let questions =
+    JSON.parse(localStorage.getItem("quizQuestions"))
+    || [];
+
+    questions.push({
+        question:question,
+        options:[
+            option1,
+            option2,
+            option3,
+            option4
+        ],
+        answer:answer
+    });
+
+    localStorage.setItem(
+        "quizQuestions",
+        JSON.stringify(questions)
+    );
+
+    clearForm();
+    loadQuestions();
+
+    alert("Question Added Successfully!");
+}
+
+function clearForm(){
+
+    document.getElementById("question").value = "";
+    document.getElementById("option1").value = "";
+    document.getElementById("option2").value = "";
+    document.getElementById("option3").value = "";
+    document.getElementById("option4").value = "";
+    document.getElementById("answer").value = "";
+}
+
+function loadQuestions(){
+
+    let questions =
+    JSON.parse(localStorage.getItem("quizQuestions"))
+    || [];
+
+    let table =
+    document.getElementById("questionTable");
+
+    let emptyMessage =
+    document.getElementById("emptyMessage");
+
+    table.innerHTML = "";
+
+    if(questions.length === 0){
+
+        emptyMessage.style.display = "block";
+        return;
+    }
+
+    emptyMessage.style.display = "none";
+
+    questions.forEach((q,index)=>{
+
+        table.innerHTML += `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${q.question}</td>
+            <td>${q.answer}</td>
+            <td>
+                <button
+                class="delete-btn"
+                onclick="deleteQuestion(${index})">
+                Delete
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+}
+
+function deleteQuestion(index){
+
+    if(confirm("Delete this question?")){
+
+        let questions =
+        JSON.parse(localStorage.getItem("quizQuestions"))
+        || [];
+
+        questions.splice(index,1);
+
+        localStorage.setItem(
+            "quizQuestions",
+            JSON.stringify(questions)
+        );
+
+        loadQuestions();
+    }
+}
+
+loadQuestions();
+
+</script>
+
+</body>
+</html>

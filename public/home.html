@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz Competition App - Home</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.hero{
+    text-align:center;
+    padding:80px 20px;
+    background:linear-gradient(135deg,#3498db,#2c3e50);
+    color:white;
+}
+
+.hero h1{
+    font-size:3rem;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:1.2rem;
+    margin-bottom:30px;
+}
+
+.hero-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.hero-buttons a{
+    text-decoration:none;
+}
+
+.btn{
+    display:inline-block;
+    padding:12px 25px;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:#27ae60;
+    color:white;
+}
+
+.btn-secondary{
+    background:#f39c12;
+    color:white;
+}
+
+.features{
+    max-width:1200px;
+    margin:50px auto;
+    padding:20px;
+}
+
+.features h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.feature-card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+.feature-card h3{
+    margin-bottom:10px;
+    color:#2c3e50;
+}
+
+.stats{
+    background:#ecf0f1;
+    padding:50px 20px;
+}
+
+.stats-grid{
+    max-width:1000px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+}
+
+.stat-card{
+    background:white;
+    text-align:center;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.stat-card h2{
+    color:#3498db;
+}
+
+.footer{
+    background:#2c3e50;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+}
+
+</style>
+
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🏆 Quiz Competition App</div>
+
+<ul class="nav-links">
+    <li><a href="home.html">Home</a></li>
+    <li><a href="register.html">Register</a></li>
+    <li><a href="index.html">Quiz</a></li>
+    <li><a href="add-questions.html">Add Questions</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+</ul>
+
+
+</nav>
+
+<section class="hero">
+
+<h1>🏆 Welcome to Quiz Competition App</h1>
+
+<p>
+    Test your knowledge, compete with friends,
+    and climb the leaderboard.
+</p>
+
+<div class="hero-buttons">
+    <a href="register.html" class="btn btn-primary">
+        Register Now
+    </a>
+
+    <a href="index.html" class="btn btn-secondary">
+        Start Quiz
+    </a>
+</div>
+
+
+</section>
+
+<section class="features">
+
+
+<h2>Why Choose Our Quiz Platform?</h2>
+
+<div class="feature-grid">
+
+    <div class="feature-card">
+        <h3>📝 Multiple Choice Questions</h3>
+        <p>Challenge yourself with engaging quiz questions.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>⏱ Timed Quiz</h3>
+        <p>Answer quickly before the timer runs out.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>🏆 Leaderboard</h3>
+        <p>Compete with others and see your ranking.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>➕ Question Management</h3>
+        <p>Add and manage quiz questions easily.</p>
+    </div>
+
+</div>
+
+</section>
+
+<section class="stats">
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <h2 id="totalQuestions">0</h2>
+        <p>Total Questions</p>
+    </div>
+
+    <div class="stat-card">
+        <h2 id="totalPlayers">0</h2>
+        <p>Registered Players</p>
+    </div>
+
+    <div class="stat-card">
+        <h2 id="leaderboardCount">0</h2>
+        <p>Leaderboard Entries</p>
+    </div>
+
+</div>
+
+
+</section>
+
+<footer class="footer">
+    <p>
+        © 2026 Quiz Competition App | All Rights Reserved
+    </p>
+</footer>
+
+<script>
+
+let questions =
+JSON.parse(localStorage.getItem("quizQuestions"))
+|| [];
+
+let users =
+JSON.parse(localStorage.getItem("quizUsers"))
+|| [];
+
+let leaderboard =
+JSON.parse(localStorage.getItem("leaderboard"))
+|| [];
+
+document.getElementById("totalQuestions")
+.innerText = questions.length;
+
+document.getElementById("totalPlayers")
+.innerText = users.length;
+
+document.getElementById("leaderboardCount")
+.innerText = leaderboard.length;
+
+</script>
+
+</body>
+</html>

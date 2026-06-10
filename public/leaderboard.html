@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leaderboard - Quiz Competition App</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.leaderboard-container{
+    max-width:900px;
+    margin:30px auto;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.leaderboard-title{
+    text-align:center;
+    margin-bottom:20px;
+    color:#2c3e50;
+}
+
+.top-player{
+    text-align:center;
+    background:#f1c40f;
+    color:#2c3e50;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.action-buttons{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:20px;
+}
+
+.clear-btn{
+    background:#e74c3c;
+}
+
+.clear-btn:hover{
+    background:#c0392b;
+}
+</style>
+
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🏆 Quiz Competition App</div>
+
+
+<ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="register.html">Register</a></li>
+    <li><a href="add-questions.html">Add Questions</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+</ul>
+
+
+</nav>
+
+<div class="leaderboard-container">
+
+
+<h1 class="leaderboard-title">
+    🏆 Quiz Leaderboard
+</h1>
+
+<div id="topPlayer" class="top-player">
+    No Scores Yet
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Player Name</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+
+    <tbody id="leaderboardBody">
+    </tbody>
+</table>
+
+<div class="action-buttons">
+    <button onclick="refreshLeaderboard()">
+        Refresh
+    </button>
+
+    <button class="clear-btn" onclick="clearLeaderboard()">
+        Clear Leaderboard
+    </button>
+</div>
+
+
+</div>
+
+<script>
+
+function loadLeaderboard(){
+
+    let leaderboard =
+    JSON.parse(localStorage.getItem("leaderboard"))
+    || [];
+
+    leaderboard.sort((a,b)=> b.score - a.score);
+
+    const tbody =
+    document.getElementById("leaderboardBody");
+
+    tbody.innerHTML = "";
+
+    if(leaderboard.length > 0){
+
+        document.getElementById("topPlayer").innerHTML =
+        "🥇 Top Player: <strong>" +
+        leaderboard[0].name +
+        "</strong> | Score: " +
+        leaderboard[0].score;
+
+    }
+
+    leaderboard.forEach((player,index)=>{
+
+        tbody.innerHTML += `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${player.name}</td>
+            <td>${player.score}</td>
+        </tr>
+        `;
+    });
+
+}
+
+function refreshLeaderboard(){
+    loadLeaderboard();
+}
+
+function clearLeaderboard(){
+
+    if(confirm("Are you sure you want to clear the leaderboard?")){
+
+        localStorage.removeItem("leaderboard");
+
+        document.getElementById("leaderboardBody").innerHTML = "";
+
+        document.getElementById("topPlayer").innerHTML =
+        "No Scores Yet";
+
+        alert("Leaderboard Cleared Successfully!");
+
+    }
+
+}
+
+loadLeaderboard();
+
+</script>
+
+</body>
+</html>
